@@ -118,7 +118,7 @@ def new_feedback(username):
         feedback = Feedback(title=title, content=content, username=username)
         db.session.add(feedback)
         db.session.commit()
-        # flash(f"Your feedback {feedback.title} has been successfully added!", 'success')
+        flash(f"Your feedback {feedback.title} has been successfully added!", 'success')
         return redirect(f"/users/{feedback.username}")
     else:
         return render_template('new_feedback.html', form=form)
@@ -127,7 +127,7 @@ def new_feedback(username):
 def update_feedback(feedback_id):
     feedback = Feedback.query.get_or_404(feedback_id)
 
-    if "username" not in session or username != session['username']:
+    if "username" not in session or feedback.username != session['username']:
         flash("Sorry, you are not allowed to perform this action!", 'danger')
         raise Unauthorized()
     form = FeedbackForm(obj=feedback)
@@ -146,7 +146,7 @@ def delete_feedback(feedback_id):
 
     feedback = Feedback.query.get(feedback_id)
 
-    if "username" not in session or username != session['username']:
+    if "username" not in session or feedback.username != session['username']:
         flash("Sorry, you are not allowed to perform this action!", 'danger')
         raise Unauthorized()
 
